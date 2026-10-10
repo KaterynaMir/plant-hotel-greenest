@@ -12,7 +12,7 @@ public abstract class Plant {
         if (height > 0){
             this.height = height;
         } else {
-            throw new IllegalArgumentException("Illegal height should be > 0");
+            throw new IllegalArgumentException("Illegal height, should be > 0");
         }
     }
 
