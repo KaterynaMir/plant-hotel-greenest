@@ -3,16 +3,18 @@ import java.time.temporal.ChronoUnit;
 
 public abstract class Plant {
 
+    private static final double MAX_HEIGHT = 10.0; // Maximum height allowed for plants in the hotel
     private final String name;
     private final double height; // in meters
     private LocalDateTime wateringDate;
 
     public Plant(String name, double height) {
         this.name = name;
-        if (height > 0){
+        if (height > 0 && height <= MAX_HEIGHT){
             this.height = height;
         } else {
-            throw new IllegalArgumentException("Illegal height, should be > 0");
+            throw new IllegalArgumentException("Illegal height," +
+                    " should be  0 < height <= " + MAX_HEIGHT);
         }
     }
 
@@ -37,16 +39,21 @@ public abstract class Plant {
                     + minToWatering % 60 + " minutes.");
         } else {
             wateringDate = LocalDateTime.now();
-            System.out.println("Watering plant " + getName() +
-                    "\nType: " + getClass() +
-                    "\nLiquid type: " + getLiquidType() +
-                    "\nAmount: " + calculateAmount() + " l");
+            System.out.printf("Watering plant %s" +
+                    "\n  Type: %s" +
+                    "\n  Liquid type: %s" +
+                    "\n  Amount: %.2f l\n",
+                    getName(),
+                    getClass().getSimpleName(),
+                    getLiquidType(),
+                    calculateAmount()
+                    );
         }
     }
 
     @Override
     public String toString(){
-        return getClass() + ": " +
+        return getClass().getSimpleName() + " " +
                 name + ", " +
                 height + " m";
     }

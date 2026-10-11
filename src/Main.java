@@ -8,10 +8,10 @@ public class Main {
 
     public static void main(String[] args) {
         SCANNER.useLocale(Locale.US);
-        PLANTS.put("IGGE", new Cactus("IGGE", 0.2));
-        PLANTS.put("LAURA", new Palm("LAURA", 5.0));
-        PLANTS.put("MEATLOAF", new Carnivorous("MEATLOAF", 0.7));
-        PLANTS.put("OLOF", new Palm("OLOF", 1.0));
+        PLANTS.put("IGGE", new Cactus("Igge", 0.2));
+        PLANTS.put("LAURA", new Palm("Laura", 5.0));
+        PLANTS.put("MEATLOAF", new Carnivorous("Meatloaf", 0.7));
+        PLANTS.put("OLOF", new Palm("Olof", 1.0));
 
         boolean running = true;
         while (running){
@@ -53,10 +53,11 @@ public class Main {
 
     private static void removePlant(Scanner scanner) {
         System.out.print("Name: ");
-        String name = scanner.nextLine().trim().toUpperCase();
-        if (PLANTS.containsKey(name)){
-            PLANTS.remove(name);
-            System.out.println("Removing plant " + name);
+        String name = scanner.nextLine().trim();
+        String key = name.toUpperCase();
+        if (PLANTS.containsKey(key)){
+            System.out.println("Removing plant " + PLANTS.get(key).getName());
+            PLANTS.remove(key);
             return;
         }
         System.out.println("Plant not found");
@@ -65,43 +66,53 @@ public class Main {
 
     private static void addPlant(Scanner scanner) {
         System.out.print("Name: ");
-        String name = scanner.nextLine().trim().toUpperCase();
+        String name = scanner.nextLine().trim();
         if (name.isEmpty()){
             System.out.println("Empty name is not allowed.");
             return;
         }
-        if (PLANTS.containsKey(name)){
+        String key = name.toUpperCase();
+
+        if (PLANTS.containsKey(key)){
             System.out.println("This name is already taken.");
             return;
         }
 
-        System.out.print(name + "'s class\n" +
-                "\t\t(1- palm\n" +
-                "\t\t 2 - carnivorous\n" +
-                "\t\t 3 - cactus): ");
-        String plantClass = scanner.nextLine().trim();
-        if (!plantClass.matches("[1-3]")){
-            System.out.println("Unknown plant class");
+        System.out.println("Choose plant type:");
+        for (PlantType type: PlantType.values()){
+            System.out.printf("  %d - %s\n",
+                    type.getPlantTypeId(),
+                    type.getPlantTypeDesc());
+        }
+
+        System.out.print(name + "'s type: ");
+        String plantTypeIdString = scanner.nextLine().trim();
+        int plantTypeId;
+        try{
+            plantTypeId = Integer.parseInt(plantTypeIdString);
+        } catch (NumberFormatException e){
+            System.out.println("Invalid plant type.");
+            return;
+        }
+
+        PlantType plantType = PlantType.fromId(plantTypeId);
+        if (plantType == null){
+            System.out.println("Unknown plant type");
             return;
         }
 
         System.out.print(name + "'s height in meters: ");
         String heightString = scanner.nextLine().trim();
+
         try{
             double height = Double.parseDouble(heightString);
-            Plant plant = null;
-            switch (plantClass){
-                case "1" -> {
-                    plant = new Palm(name, height);
-                }
-                case "2" -> {
-                    plant = new Carnivorous(name, height);
-                }
-                case "3" -> {
-                    plant = new Cactus(name, height);
-                }
-            }
-            PLANTS.put(plant.getName().toUpperCase(), plant);
+            Plant plant = switch (plantType){
+                case PALM -> new Palm(name, height);
+                case CARNIVOROUS -> new Carnivorous(name, height);
+                case CACTUS -> new Cactus(name, height);
+            };
+            PLANTS.put(key, plant);
+            System.out.println("Plant added successfully");
         } catch (NumberFormatException e){
             System.out.println("Illegal height, cannot convert to double.");
         } catch (IllegalArgumentException e){
@@ -124,7 +135,7 @@ public class Main {
     private static void showPlants() {
         System.out.println("Plants:");
         for (Plant plant : PLANTS.values()) {
-            System.out.println(plant);;
+            System.out.println("  " + plant);;
         }
     }
 
