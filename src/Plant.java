@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 public abstract class Plant {
 
@@ -39,7 +40,7 @@ public abstract class Plant {
                     + minToWatering % 60 + " minutes.");
         } else {
             wateringDate = LocalDateTime.now();
-            System.out.printf("Watering plant %s" +
+            System.out.printf(Locale.US,"Watering plant %s" +
                     "\n  Type: %s" +
                     "\n  Liquid type: %s" +
                     "\n  Amount: %.2f l\n",
