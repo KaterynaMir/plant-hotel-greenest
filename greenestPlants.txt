@@ -1,0 +1,26 @@
+[ {
+  "type" : "Palm",
+  "height" : 1.0,
+  "name" : "Olof",
+  "wateringDate" : "2026-10-16T10:13:06.907472"
+}, {
+  "type" : "Palm",
+  "height" : 5.0,
+  "name" : "Laura",
+  "wateringDate" : "2026-10-16T10:13:10.649842"
+}, {
+  "type" : "Carnivorous",
+  "height" : 0.7,
+  "name" : "Meatloaf",
+  "wateringDate" : "2026-10-16T10:19:26.98352"
+}, {
+  "type" : "Palm",
+  "height" : 1.7,
+  "name" : "Ida",
+  "wateringDate" : "2026-10-16T10:13:27.880114"
+}, {
+  "type" : "Cactus",
+  "height" : 0.2,
+  "name" : "Igge",
+  "wateringDate" : "2026-10-16T10:19:02.612128"
+} ]

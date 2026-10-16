@@ -37,6 +37,7 @@ public class Menu {
             case "3" -> addPlant();
             case "4" -> removePlant();
             case "5" -> {
+                plantManager.writePlants();
                 System.out.println("Exiting the program");
                 return false;
             }

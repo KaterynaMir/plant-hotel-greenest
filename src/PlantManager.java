@@ -1,15 +1,20 @@
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+
+import java.io.*;
+import java.util.*;
 
 public class PlantManager {
     private static final Map<String,Plant> PLANTS = new HashMap<>();
+    private static final String PLANTS_FILENAME = "greenestPlants.txt";
 
     public PlantManager(){
-        addPlant(new Cactus("Igge", 0.2));
+       readPlants();
+       /* addPlant(new Cactus("Igge", 0.2));
         addPlant(new Palm("Laura", 5.0));
         addPlant(new Carnivorous("Meatloaf", 0.7));
-        addPlant(new Palm("Olof", 1.0));
+        addPlant(new Palm("Olof", 1.0));*/
     }
 
     public boolean addPlant(Plant plant){
@@ -41,5 +46,31 @@ public class PlantManager {
 
     private String getKey(String name){
         return name.toUpperCase();
+    }
+
+    public void readPlants() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<Plant> plants = mapper.readValue(
+                new File(PLANTS_FILENAME),
+                new TypeReference<List<Plant>>() {}
+        );
+
+        PLANTS.clear();
+
+        for (Plant plant : plants) {
+            addPlant(plant);
+        }
+
+        System.out.println("Plants loaded: " + PLANTS.size());
+
+    }
+
+    public void writePlants() {
+        ObjectMapper mapper = new ObjectMapper();
+        Collection<Plant> plants = PLANTS.values();
+        mapper.writerFor(new TypeReference<Collection<Plant>>() {})
+                .withDefaultPrettyPrinter()
+                .writeValue(new File(PLANTS_FILENAME), plants);
     }
 }

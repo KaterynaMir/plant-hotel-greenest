@@ -1,7 +1,9 @@
-public class Palm extends Plant {
+public final class Palm extends Plant {
 
     public Palm(String name, double height) {
         super(name, height);
+    }
+    public Palm(){
     }
 
     @Override
@@ -10,7 +12,7 @@ public class Palm extends Plant {
     }
 
     @Override
-    public LiquidType getLiquidType() {
+    public LiquidType determineLiquidType() {
         return LiquidType.TAP_WATER;
     }
 

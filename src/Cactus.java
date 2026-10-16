@@ -1,8 +1,10 @@
-public class Cactus extends Plant {
+public final class Cactus extends Plant {
 
     public Cactus(String name, double height) {
         super(name, height);
     }
+
+    public Cactus(){}
 
     @Override
     public double calculateAmount() {
@@ -10,7 +12,7 @@ public class Cactus extends Plant {
     }
 
     @Override
-    public LiquidType getLiquidType() {
+    public LiquidType determineLiquidType() {
         return LiquidType.MINERAL_WATER;
     }
 }
