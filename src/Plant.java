@@ -1,6 +1,3 @@
-
-
-//import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.time.LocalDateTime;
@@ -13,12 +10,6 @@ import java.util.Locale;
         property = "type"
 )
 
-/*
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Cactus.class, name = "cactus"),
-        @JsonSubTypes.Type(value = Carnivorous.class, name = "carnivorous"),
-        @JsonSubTypes.Type(value = Palm.class, name = "palm")
-})*/
 
 public abstract sealed class Plant permits Cactus, Carnivorous, Palm {
 
