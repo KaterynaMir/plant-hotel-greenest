@@ -10,10 +10,12 @@ import java.util.Locale;
         property = "type"
 )
 
-
-public abstract sealed class Plant permits Cactus, Carnivorous, Palm {
+// abstract class implements Waterable interface
+public abstract sealed class Plant implements Waterable permits Cactus, Carnivorous, Palm {
 
     public static final double MAX_HEIGHT = 10.0; // Maximum height allowed for plants in the hotel
+
+    //encapsulation
     private String name;
     private double height; // in meters
     private LocalDateTime wateringDate;
@@ -61,6 +63,7 @@ public abstract sealed class Plant permits Cactus, Carnivorous, Palm {
 
     public abstract LiquidType determineLiquidType();
 
+    @Override
     public void water() {
         LocalDateTime now = LocalDateTime.now();
         if (wateringDate!=null && wateringDate.plusDays(1).isAfter(now)){
@@ -76,7 +79,7 @@ public abstract sealed class Plant permits Cactus, Carnivorous, Palm {
                     "\n  Amount: %.2f l\n",
                     getName(),
                     getClass().getSimpleName(),
-                    determineLiquidType(),
+                    determineLiquidType().getDesc(),
                     calculateAmount()
                     );
         }

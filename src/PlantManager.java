@@ -7,8 +7,13 @@ import java.io.*;
 import java.util.*;
 
 public class PlantManager {
+
     private final String PLANTS_FILENAME = "greenestPlants.txt";
+
+    // Map interface with a HashMap implementation.
+    // Polymorphism: objects of different Plant subclasses can be stored as values in the same map.
     private final Map<String,Plant> plants = new HashMap<>();
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     public PlantManager() {
@@ -36,6 +41,10 @@ public class PlantManager {
     public Plant findPlant(String name){
         String key = getKey(name);
         return plants.get(key);
+    }
+
+    public Waterable findWaterable(String name) {
+        return findPlant(name);
     }
 
     public Collection<Plant> getPlants(){

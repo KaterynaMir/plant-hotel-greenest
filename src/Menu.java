@@ -66,17 +66,20 @@ public class Menu {
 
     private void waterPlant() {
         System.out.println("Which plant should receive liquid?");
-        String name = readString("Name: ");
-        Plant plant = plantManager.findPlant(name);
-        if (plant!= null){
-            plant.water();
+        String name = readNonEmptyName();
+
+        Waterable waterable = plantManager.findWaterable(name); //interface
+
+        if (waterable == null){
+            System.out.println("Plant not found");
             return;
         }
-        System.out.println("Plant not found");
+        // Interface usage: interact with the object through the Waterable interface
+        waterable.water();
     }
 
     private void addPlant() {
-        String name = readName();
+        String name = readUniquePlantName();
         PlantType plantType = choosePlantType(name);
         double height = readHeight(name);
         Plant plant = createPlant(plantType, name, height);
@@ -86,11 +89,7 @@ public class Menu {
     }
 
     private void removePlant() {
-        String name = readString("Name: ");
-        if (name.isBlank()) {
-            System.out.println("Empty name is not allowed.");
-            return;
-        }
+        String name = readNonEmptyName();
         if (plantManager.removePlant(name)){
             System.out.println("Removing plant " + name);
             return;
@@ -103,18 +102,25 @@ public class Menu {
         return scanner.nextLine().trim();
     }
 
-    private String readName(){
+    private String readNonEmptyName(){
         while (true){
             String name = readString("Name: ");
             if (name.isBlank()){
                 System.out.println("Empty name is not allowed.");
                 continue;
             }
-            if (plantManager.findPlant(name) != null){
-                System.out.println("This name is already taken.");
-                continue;
-            }
             return name;
+        }
+    }
+
+    private String readUniquePlantName(){
+        while (true){
+            String name = readNonEmptyName();
+            if (plantManager.findPlant(name) == null){
+                return name;
+            }
+            System.out.println("A plant with this name already exists." +
+                    " Please choose another name.");
         }
     }
 
