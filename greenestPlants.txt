@@ -2,30 +2,25 @@
   "type" : "Palm",
   "height" : 1.0,
   "name" : "Olof",
-  "wateringDate" : "2026-10-18T18:02:50.860925"
+  "wateringDate" : "2026-10-19T22:13:43.355227"
 }, {
   "type" : "Palm",
   "height" : 5.0,
   "name" : "Laura",
-  "wateringDate" : "2026-10-18T18:06:46.472518"
+  "wateringDate" : "2026-10-19T22:12:42.236667"
 }, {
   "type" : "Carnivorous",
   "height" : 0.7,
   "name" : "Meatloaf",
-  "wateringDate" : "2026-10-18T18:06:39.545635"
+  "wateringDate" : "2026-10-20T00:48:14.772643"
 }, {
   "type" : "Palm",
   "height" : 1.7,
   "name" : "Ida",
-  "wateringDate" : "2026-10-18T18:02:43.717658"
-}, {
-  "type" : "Carnivorous",
-  "height" : 1.9,
-  "name" : "Leo",
-  "wateringDate" : "2026-10-18T18:04:53.31856"
+  "wateringDate" : "2026-10-19T22:12:55.218352"
 }, {
   "type" : "Cactus",
   "height" : 0.2,
   "name" : "Igge",
-  "wateringDate" : "2026-10-18T18:05:21.710536"
+  "wateringDate" : "2026-10-19T22:13:13.848308"
 } ]

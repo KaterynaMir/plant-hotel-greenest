@@ -13,19 +13,23 @@ import java.util.Locale;
 
 public abstract sealed class Plant permits Cactus, Carnivorous, Palm {
 
-    private static final double MAX_HEIGHT = 10.0; // Maximum height allowed for plants in the hotel
+    public static final double MAX_HEIGHT = 10.0; // Maximum height allowed for plants in the hotel
     private String name;
     private double height; // in meters
     private LocalDateTime wateringDate;
 
 
     public Plant(String name, double height) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Empty name is not allowed.");
+        }
         this.name = name;
+
         if (height > 0 && height <= MAX_HEIGHT){
             this.height = height;
         } else {
-            throw new IllegalArgumentException("Illegal height," +
-                    " should be  0 < height <= " + MAX_HEIGHT);
+            throw new IllegalArgumentException(
+                    "Illegal height, should be  0 < height <= " + MAX_HEIGHT);
         }
     }
 

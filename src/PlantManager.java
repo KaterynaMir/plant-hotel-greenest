@@ -1,4 +1,5 @@
 
+import tools.jackson.core.JacksonException;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
@@ -6,10 +7,11 @@ import java.io.*;
 import java.util.*;
 
 public class PlantManager {
-    private static final Map<String,Plant> PLANTS = new HashMap<>();
-    private static final String PLANTS_FILENAME = "greenestPlants.txt";
+    private final String PLANTS_FILENAME = "greenestPlants.txt";
+    private final Map<String,Plant> plants = new HashMap<>();
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    public PlantManager(){
+    public PlantManager() {
        readPlants();
        /* addPlant(new Cactus("Igge", 0.2));
         addPlant(new Palm("Laura", 5.0));
@@ -17,60 +19,64 @@ public class PlantManager {
         addPlant(new Palm("Olof", 1.0));*/
     }
 
-    public boolean addPlant(Plant plant){
+    public boolean addPlant(Plant plant) {
         String key = getKey(plant.getName());
-        if (PLANTS.containsKey(key)){
-            return false;
-        }
-        PLANTS.put(key, plant);
-        return true;
+        return plants.putIfAbsent(key, plant) == null;
     }
 
     public boolean removePlant(String name){
         String key = getKey(name);
-        if (!PLANTS.containsKey(key)){
+        if (!plants.containsKey(key)){
             return false;
         }
-        PLANTS.remove(key);
+        plants.remove(key);
         return true;
     }
 
     public Plant findPlant(String name){
         String key = getKey(name);
-        return PLANTS.get(key);
+        return plants.get(key);
     }
 
     public Collection<Plant> getPlants(){
-        return PLANTS.values();
+        return List.copyOf(plants.values());
     }
 
     private String getKey(String name){
-        return name.toUpperCase();
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Plant name cannot be empty.");
+        }
+        return name.toUpperCase(Locale.ROOT);
     }
 
-    public void readPlants() {
-        ObjectMapper mapper = new ObjectMapper();
+    private void readPlants() {
+        try {
+            List<Plant> loadedPlants = mapper.readValue(
+                    new File(PLANTS_FILENAME),
+                    new TypeReference<List<Plant>>() {}
+            );
 
-        List<Plant> plants = mapper.readValue(
-                new File(PLANTS_FILENAME),
-                new TypeReference<List<Plant>>() {}
-        );
+            plants.clear();
 
-        PLANTS.clear();
+            for (Plant plant : loadedPlants) {
+                addPlant(plant);
+            }
 
-        for (Plant plant : plants) {
-            addPlant(plant);
+            System.out.println("Plants loaded: " + plants.size());
+        } catch (JacksonException e) {
+            System.out.println("Could not load plants: " + e.getMessage());
         }
-
-        System.out.println("Plants loaded: " + PLANTS.size());
-
     }
 
     public void writePlants() {
-        ObjectMapper mapper = new ObjectMapper();
-        Collection<Plant> plants = PLANTS.values();
-        mapper.writerFor(new TypeReference<Collection<Plant>>() {})
-                .withDefaultPrettyPrinter()
-                .writeValue(new File(PLANTS_FILENAME), plants);
+        Collection<Plant> plantsToWrite = plants.values();
+        try {
+            mapper.writerFor(new TypeReference<Collection<Plant>>() {
+                    })
+                    .withDefaultPrettyPrinter()
+                    .writeValue(new File(PLANTS_FILENAME), plantsToWrite);
+        } catch (JacksonException e){
+            System.out.println("Could not write plants to the file: " + e.getMessage());
+        }
     }
 }
