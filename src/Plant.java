@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import javax.swing.*;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
@@ -68,20 +69,26 @@ public abstract sealed class Plant implements Waterable permits Cactus, Carnivor
         LocalDateTime now = LocalDateTime.now();
         if (wateringDate!=null && wateringDate.plusDays(1).isAfter(now)){
             long minToWatering = ChronoUnit.MINUTES.between(now, wateringDate.plusDays(1));
-            System.out.println("Plant is already watered. Should be watered again in "
+
+            JOptionPane.showMessageDialog(null,
+                    "Plant is already watered. Should be watered again in "
                     + minToWatering / 60 + " hours and "
                     + minToWatering % 60 + " minutes.");
         } else {
             wateringDate = LocalDateTime.now();
-            System.out.printf(Locale.US,"Watering plant %s" +
-                    "\n  Type: %s" +
-                    "\n  Liquid type: %s" +
-                    "\n  Amount: %.2f l\n",
+            String message = String.format(
+                    Locale.US,
+                    "Watering plant %s:" +
+                    "\n    Type: %s" +
+                    "\n    Liquid type: %s" +
+                    "\n    Amount: %.2f l\n",
                     getName(),
                     getClass().getSimpleName(),
                     determineLiquidType().getDesc(),
                     calculateAmount()
-                    );
+            );
+
+            JOptionPane.showMessageDialog(null, message);
         }
     }
 
